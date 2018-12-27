@@ -20,4 +20,7 @@ $ pip install bs4
 
 # Input
 
+![alt text](https://github.com/iamamansharma/lyrics/blob/master/input.jpg)
+
 # Output
+![alt text](https://github.com/iamamansharma/lyrics/blob/master/output.jpg)
