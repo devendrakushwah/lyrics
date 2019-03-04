@@ -17,7 +17,6 @@ public class LyricsHelper {
             Element data = elem.getElementsByTag("a").first();
             int http=data.toString().indexOf("http");
             int html=data.toString().indexOf("html");
-            //Log.d("lyrics",data.toString().substring(http,html+4));
             return data.toString().substring(http,html+4);
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,7 +36,6 @@ public class LyricsHelper {
             Document document = Jsoup.connect(link).get();
             Elements elem = document.getElementsByClass("verse");
             for (Element item:elem) {
-                //Log.d("lyrics",item.text());
                 for (Element j : item.getAllElements()){
                     ans+=j.wholeText();
                 }
