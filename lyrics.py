@@ -1,35 +1,32 @@
 '''
 Author: Aman Sharma
+Contributor : Devendra Kushwah
 Python 3
-lyrics() : This funciton takes name of artist and song as argument and prints lyrics
+get_lyrics() : This funciton takes name of artist and song as argument and prints lyrics
 lyrics scrapped from : http://www.metrolyrics.com/
 '''
+import requests, bs4
 
-# import libraries
-from bs4 import BeautifulSoup 
-import requests
+def get_url_from_google(song,artist):
+  page=page=requests.get("https://www.google.com/search?&q="+artist+"+"+song+"+lyrics+metrolyrics")
+  soup=bs4.BeautifulSoup(page.text,'html.parser')
+  data=str((soup.find_all('div',{'class':'g'}))[0].find_all('a')[0])
+  http=data.index('http')
+  html=data.index('html')
 
-def lyrics(artist_name, song_name):
-	
-	# create url
-	url = 'http://www.metrolyrics.com/'+song_name+"-lyrics-"+artist_name
+  return data[http:html+4]
+  
+  
+def get_lyrics(song,artist):
+  page=requests.get(get_url_from_google(song,artist))
+  soup=bs4.BeautifulSoup(page.text,'html.parser')
+  lyrics = soup.find_all('p', {'class':'verse'})
+  for i in lyrics:
+    for j in i.contents:
+      if(str(j) != '<br/>'):
+        print(j)
 
-	# get lyrics webpage 
-	web_page = requests.get(url)
-
-	# check for status code
-	if web_page.status_code == 200:
-		# parse the html using beautiful soup
-		soup = BeautifulSoup(web_page.content, 'html.parser')
-
-		# find lyrics in soup
-		lyrics = soup.find_all('p', {'class':'verse'})
-
-		# print the lyrics
-		for i in lyrics:
-			print(i.text)
-
-# taking name of artist and song
-artist_name = input('Artist: ').lower().replace(' ', '-')
-song_name = input('Song: ').lower().replace(' ', '-')
-lyrics(artist_name, song_name) 
+if __name__ == '__main__':
+  artist=input('Artist : ')
+  song=input('Song : ')
+  get_lyrics(song,artist)
